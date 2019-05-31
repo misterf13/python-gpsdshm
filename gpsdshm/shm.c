@@ -172,13 +172,17 @@ int get_satellites_visible(struct shmexport_t *shm) {
     return shm->gpsdata.satellites_visible;
 }
 
+int get_satellites_used(struct shmexport_t *shm) {
+    return shm->gpsdata.satellites_used;
+}
+
 
 /* satellite_t */
 double get_satellite_ss(struct shmexport_t *shm, unsigned int index)  {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.ss[index];
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.skyview[index].ss;
 #endif
 }
@@ -198,8 +202,8 @@ int get_satellite_used(struct shmexport_t *shm, unsigned int prn)  {
 }
 #endif
 
-#if GPSD_API_MAJOR_VERSION == 6
-int get_satellite_used(struct shmexport_t *shm, unsigned int index)  {
+#if GPSD_API_MAJOR_VERSION == 8
+bool get_satellite_used(struct shmexport_t *shm, unsigned int index)  {
     return shm->gpsdata.skyview[index].used;
 }
 #endif
@@ -209,7 +213,7 @@ int get_satellite_prn(struct shmexport_t *shm, unsigned int index)  {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.PRN[index];
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.skyview[index].PRN;
 #endif
 }
@@ -218,7 +222,7 @@ int get_satellite_elevation(struct shmexport_t *shm, unsigned int index)  {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.elevation[index];
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.skyview[index].elevation;
 #endif
 }
@@ -227,7 +231,7 @@ int get_satellite_azimuth(struct shmexport_t *shm, unsigned int index)  {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.azimuth[index];
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.skyview[index].azimuth;
 #endif
 }
@@ -241,7 +245,7 @@ int get_ndevices(struct shmexport_t *shm) {
 #if GPSD_API_MAJOR_VERSION == 5
     return 1;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.ndevices;
 #endif
 }
@@ -250,7 +254,7 @@ char *get_device_path(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.path;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].path;
 #endif
 } 
@@ -259,7 +263,7 @@ int get_device_flags(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.flags;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].flags;
 #endif
 } 
@@ -268,7 +272,7 @@ char *get_device_driver(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.driver;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].driver;
 #endif
 } 
@@ -277,7 +281,7 @@ char *get_device_subtype(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.subtype;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].subtype;
 #endif
 } 
@@ -286,7 +290,7 @@ double get_device_activated(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.activated;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].activated;
 #endif
 } 
@@ -295,7 +299,7 @@ unsigned int get_device_baudrate(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.baudrate;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].baudrate;
 #endif
 } 
@@ -304,7 +308,7 @@ unsigned int get_device_stopbits(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.stopbits;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].stopbits;
 #endif
 } 
@@ -313,7 +317,7 @@ char *get_device_parity(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.parity;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].parity;
 #endif
 } 
@@ -322,7 +326,7 @@ double get_device_cycle(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.cycle;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].cycle;
 #endif
 } 
@@ -331,7 +335,7 @@ double get_device_mincycle(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.mincycle;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].mincycle;
 #endif
 } 
@@ -340,7 +344,7 @@ int get_device_driver_mode(struct shmexport_t *shm, unsigned int index) {
 #if GPSD_API_MAJOR_VERSION == 5
     return shm->gpsdata.dev.driver_mode;
 #endif
-#if GPSD_API_MAJOR_VERSION == 6
+#if GPSD_API_MAJOR_VERSION == 8
     return shm->gpsdata.devices.list[index].driver_mode;
 #endif
 } 
